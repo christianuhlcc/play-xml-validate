@@ -85,7 +85,7 @@ class XmlValidatingBinderSpec
   }
 
   "The XML Case Class Binder" should {
-    "bind to Case Classes for network reachable XSDs" in {git 
+    "bind to Case Classes for network reachable XSDs" in {
       Server.withRouter() {
         case GET(p"/sample.xsd") =>
           Action {
