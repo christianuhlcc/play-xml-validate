@@ -24,7 +24,14 @@ class SampleController @Inject() extends Controller with XmlValidatingBinder {
 ```
 ## Set up
 
-1.Include Dependency
+0. Build
+
+TODO: This project has not been released to Maven yet. For now, you have to build and provide it yourself
+```scala
+sbt clean compile test publishLocal
+```
+
+1. Include Dependency
 
 ```scala
   libraryDependencies += "de.codecentric" %% "play-xml-validate" % "0.0.1-SNAPSHOT",
@@ -51,7 +58,7 @@ lazy val root = (project in file(".")).
 
 ```
 
-3. Include in your Controller 
+3. Include the XmlValidatingBinder in your controller by including the Trait and using the object method
 
 ```scala
 @Singleton
