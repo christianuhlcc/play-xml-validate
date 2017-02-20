@@ -26,10 +26,10 @@ class SampleController @Inject() extends Controller with XmlValidatingBinder {
 
 0. Build
 
-TODO: This project has not been released to Maven yet. For now, you have to build and provide it yourself
-```scala
-sbt clean compile test publishLocal
-```
+	TODO: This project has not been released to Maven yet. For now, you have to build and provide it yourself
+	```scala
+	sbt clean compile test publishLocal
+	```
 
 1. Include Dependency
 
