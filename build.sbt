@@ -42,3 +42,5 @@ scalacOptions ++= Seq(
   "-Ywarn-unused-import")
 
 unmanagedClasspath in Test += baseDirectory.value / "src" / "test" / "resources"
+
+coverageExcludedPackages := "<empty>;de.codecentric.play.xml.validate.test.*;scalaxb"
