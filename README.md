@@ -33,44 +33,44 @@ sbt clean compile test publishLocal
 
 1. Include Dependency
 
-```scala
-  libraryDependencies += "de.codecentric" %% "play-xml-validate" % "0.0.1-SNAPSHOT",
-```
+	```scala
+	  libraryDependencies += "de.codecentric" %% "play-xml-validate" % "0.0.1-SNAPSHOT",
+	```
 
 2. Generate case classes with scalaxb
 
-- include the scalaxb-sbt plugin in your `plugins.sbt`
+	- include the scalaxb-sbt plugin in your `plugins.sbt`
 
-```scala
-resolvers += Resolver.sonatypeRepo("public")
-addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.5.0")
-```
+	```scala
+	resolvers += Resolver.sonatypeRepo("public")
+	addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.5.0")
+	```
 
-- configure the scalaxb plugin in your `build.sbt`
+	- configure the scalaxb plugin in your `build.sbt`
 
-```scala
-lazy val root = (project in file(".")).
-  enablePlugins(PlayScala, ScalaxbPlugin).
-  settings(
-    scalaxbPackageName in(Compile, scalaxb) := "de.codecentric.play.xml.validate.sample",
-    scalaxbXsdSource in(Compile, scalaxb) := baseDirectory.value / "conf" / "xsd"
-  )
+	```scala
+	lazy val root = (project in file(".")).
+	  enablePlugins(PlayScala, ScalaxbPlugin).
+	  settings(
+	    scalaxbPackageName in(Compile, scalaxb) := "de.codecentric.play.xml.validate.sample",
+	    scalaxbXsdSource in(Compile, scalaxb) := baseDirectory.value / "conf" / "xsd"
+	  )
 
-```
+	```
 
 3. Include the XmlValidatingBinder in your controller by including the Trait and using the object method
 
-```scala
-@Singleton
-class SampleController @Inject() extends Controller with XmlValidatingBinder {
-	def receiveXML(): Action[YourXmlClass] = Action.async(XmlValidatingBinder.bindXml[YourXmlClass]()) { request =>
-		Future { 
-			val content : YourXmlClass = request.body
-    		...
-     	}
-  	}
-}
-```
+	```scala
+	@Singleton
+	class SampleController @Inject() extends Controller with XmlValidatingBinder {
+		def receiveXML(): Action[YourXmlClass] = Action.async(XmlValidatingBinder.bindXml[YourXmlClass]()) { request =>
+			Future { 
+				val content : YourXmlClass = request.body
+			...
+		}
+		}
+	}
+	```
 
 There is a comprehensive sample project in [sample](/sample)
 
