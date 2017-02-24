@@ -4,9 +4,9 @@ import akka.util.ByteString
 import de.codecentric.play.xml.validate.test._
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Assertions, Matchers, WordSpec}
+import org.scalatest.{ Assertions, Matchers, WordSpec }
 import play.api.http.Port
-import play.api.mvc.{RequestHeader, _}
+import play.api.mvc.{ RequestHeader, _ }
 import play.api.routing.sird._
 import play.core.server.Server
 
@@ -14,16 +14,16 @@ import scala.io.Source.fromInputStream
 import scala.xml.SAXParseException
 
 class XmlValidatingBinderSpec
-  extends WordSpec
+    extends WordSpec
     with Matchers
     with Assertions
     with XmlValidatingBinder
     with MockitoSugar {
 
-  val testXml = "sample.xml"
+  val testXml       = "sample.xml"
   val testXmlBroken = "sample_broken.xml"
-  val testXmlLocal = "sample_local.xml"
-  val testXsd = "sample.xsd"
+  val testXmlLocal  = "sample_local.xml"
+  val testXsd       = "sample.xsd"
 
   val requestHeader = mock[RequestHeader]
   when(requestHeader.charset).thenReturn(Some("UTF-8"))
@@ -81,7 +81,6 @@ class XmlValidatingBinderSpec
         )
       }
     }
-
   }
 
   "The XML Case Class Binder" should {
@@ -95,9 +94,9 @@ class XmlValidatingBinderSpec
         val xml = loadXmlFromClasspathAndSetPort(testXml, port)
         val result =
           XmlValidatingBinder.binder[OrderType](requestHeader,
-            ByteString(xml),
-            true,
-            Decodecentricplayxmlvalidatetest_OrderTypeFormat)
+                                                ByteString(xml),
+                                                true,
+                                                Decodecentricplayxmlvalidatetest_OrderTypeFormat)
         result.name should be("someName")
       }
     }

@@ -22,7 +22,8 @@ libraryDependencies ++= {
     "org.scala-lang.modules"  %%  "scala-parser-combinators"  % "1.0.1",
     "net.databinder.dispatch" %%  "dispatch-core"             % dispatchV,
     "org.scalatestplus.play"  %%  "scalatestplus-play"        % "1.5.1"   % Test,
-    "org.mockito"             %   "mockito-core"              % "2.7.0"   % Test
+    "org.mockito"             %   "mockito-core"              % "2.7.0"   % Test,
+    "org.scalatestplus.play"  %%  "scalatestplus-play"        % "1.5.1"   % Test
   )
 }
 
@@ -42,5 +43,5 @@ scalacOptions ++= Seq(
   "-Ywarn-unused-import")
 
 unmanagedClasspath in Test += baseDirectory.value / "src" / "test" / "resources"
-
+parallelExecution in Test := false
 coverageExcludedPackages := "<empty>;de.codecentric.play.xml.validate.test.*;scalaxb"

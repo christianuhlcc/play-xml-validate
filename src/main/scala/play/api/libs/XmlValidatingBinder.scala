@@ -46,13 +46,10 @@ trait XmlValidatingBinder extends Results {
           xmlContentTypes
             .exists(tl.startsWith(_)) || parse.ApplicationXmlMatcher.pattern.matcher(tl).matches()
         },
-        tolerantBodyParser("xml",
-                           DefaultMaxTextLength,
-                           withXMLValidation,
-                           "Invalid XML",
-                           withContentType,
-                           format)(binder),
-        createBadResult("Expecting XML body", withContentType, UnsupportedMediaType)
+        tolerantBodyParser("xml", DefaultMaxTextLength, "Invalid XML", withXMLValidation, format)(
+          binder
+        ),
+        createBadResult("Expecting XML body")
       )
 
     private[play] def binder[BO](request: RequestHeader,
@@ -78,15 +75,15 @@ trait XmlValidatingBinder extends Results {
           }
         XML.load(inputSource)
       }
+
       validateBody
       scalaxb.fromXML[BO](parseBody)(format)
     }
 
     private def createBadResult(errorMessage: String,
-                                contentType: String,
                                 status: Status = BadRequest): RequestHeader => Future[Result] = {
       _ =>
-        Future.successful(status(errorMessage).as(contentType))
+        Future.successful(status(errorMessage))
     }
 
     /**
@@ -96,13 +93,13 @@ trait XmlValidatingBinder extends Results {
     private def tolerantBodyParser[BO](
         name: String,
         maxLength: Long,
-        validate: Boolean,
         errorMessage: String,
-        contentType: String,
+        withXmlValidation: Boolean,
         format: XMLFormat[BO]
     )(parser: (RequestHeader, ByteString, Boolean, XMLFormat[BO]) => BO): BodyParser[BO] =
       BodyParser(name + ", maxLength=" + maxLength) { request =>
         import play.api.libs.iteratee.Execution.Implicits.trampoline
+
         parse.enforceMaxLength(
           request,
           maxLength,
@@ -110,12 +107,11 @@ trait XmlValidatingBinder extends Results {
             Sink.fold[ByteString, ByteString](ByteString.empty)((state, bs) => state ++ bs)
           ) mapFuture { bytes =>
             try {
-              Future.successful(Right(parser(request, bytes, validate, format)))
+              Future.successful(Right(parser(request, bytes, withXmlValidation, format)))
             } catch {
               case NonFatal(e) =>
                 logger.debug(errorMessage, e)
-                createBadResult(errorMessage + ": " + e.getMessage, contentType)(request)
-                  .map(Left(_))
+                createBadResult(errorMessage + ": " + e.getMessage)(request).map(Left(_))
             }
           }
         )
