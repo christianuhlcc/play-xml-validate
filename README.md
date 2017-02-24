@@ -1,6 +1,7 @@
 # play-xml-validate
 
 [![Build Status](https://travis-ci.org/christianuhlcc/play-xml-validate.svg?branch=master)](https://travis-ci.org/christianuhlcc/play-xml-validate)
+[![Coverage Status](https://coveralls.io/repos/github/christianuhlcc/play-xml-validate/badge.svg?branch=master)](https://coveralls.io/github/christianuhlcc/play-xml-validate?branch=master)
 
 Adds XML Validation and Databinding to the Play Framework
 
